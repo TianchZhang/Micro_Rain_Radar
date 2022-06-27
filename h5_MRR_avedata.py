@@ -133,18 +133,18 @@ if __name__ == '__main__':
         Fn = np.array(Fn, dtype=object)
         Fn = Fn.astype(np.float64)
         tempFn = np.zeros((31, 64, 1440))
-        tempFn[:, :, timeloc] = np.reshape(np.transpose(Fn), (31, 64, float(len(Fn))/64.))
+        tempFn[:, :, timeloc] = np.reshape(np.transpose(Fn), (31, 64, len(Fn)//64))
         Dn = np.array(Dn, dtype=object)
         Dn = Dn.astype(np.float64)
         tempDn = np.zeros((31, 64, 1440))
-        tempDn[:, :, timeloc] = np.reshape(np.transpose(Dn), (31, 64, float(len(Dn))/64.))
+        tempDn[:, :, timeloc] = np.reshape(np.transpose(Dn), (31, 64, len(Dn)//64))
         Nn = np.array(Nn, dtype=object)
         Nn = Nn.astype(np.float64)
         tempNn = np.zeros((31, 64, 1440))
-        tempNn[:, :, timeloc] = np.reshape(np.transpose(Nn), (31, 64, float(len(Nn))/64.))
+        tempNn[:, :, timeloc] = np.reshape(np.transpose(Nn), (31, 64, len(Nn)//64))
 
-        savename = savefile + get_mrr_filetime + 'MRR_AveData_' + get_mrr_filetime(files) + '.h5'
+        savename = savefile + 'MRR_AveData_' + get_mrr_filetime(files) + '.h5'
         f = h5py.File(savename,"w")
-        h = f.create_dataset("H",HH)
+        h = f.create_dataset("H",data=tempHH)
         h.attrs["name"] = "Height"
         f.close()
