@@ -47,16 +47,14 @@ if __name__ == '__main__':
     filelist = get_filelist('E:\\DATA\MRR_AveData\\202107', [])
     savefile = 'E:\\DATA\\h5_aveMRR\\'
 
+    
+    
+    
     for files in filelist:
         file = open(files, mode='r')
         datalines = file.readlines()
 
         timeloc = []
-        for line in datalines:
-            if line.startswith('MRR'):
-                loc = mrr_timeloc(line)
-                timeloc.append(loc)
-
         HH = []
         TsF = []
         Fn = []
@@ -67,6 +65,10 @@ if __name__ == '__main__':
         RR = []
         LWC = []
         VV = []
+        for line in datalines:
+            if line.startswith('MRR'):
+                loc = mrr_timeloc(line)
+                timeloc.append(loc)
 
         for line in datalines:
             if line.startswith('H'):
@@ -100,49 +102,49 @@ if __name__ == '__main__':
                 s = to_list(line)
                 Nn.append(s)
 
-    HH = np.array(HH, dtype=object)
-    HH = HH.astype(np.float64)
-    tempHH = np.zeros((31, 1440))
-    tempHH[:, timeloc] = np.transpose(HH)
-    TsF = np.array(TsF, dtype=object)
-    TsF = TsF.astype(np.float64)
-    tempTsF = np.zeros((31, 1440))
-    tempTsF[:, timeloc] = np.transpose(TsF)
-    Pia = np.array(Pia, dtype=object)
-    Pia = Pia.astype(np.float64)
-    tempPia = np.zeros((31, 1440))
-    tempPia[:, timeloc] = np.transpose(Pia)
-    ZZ = np.array(ZZ, dtype=object)
-    ZZ = ZZ.astype(np.float64)
-    tempZZ = np.zeros((31, 1440))
-    tempZZ[:, timeloc] = np.transpose(ZZ)
-    RR = np.array(RR, dtype=object)
-    RR = RR.astype(np.float64)
-    tempRR = np.zeros((31, 1440))
-    tempRR[:, timeloc] = np.transpose(RR)
-    LWC = np.array(LWC, dtype=object)
-    LWC = LWC.astype(np.float64)
-    tempLWC = np.zeros((31, 1440))
-    tempLWC[:, timeloc] = np.transpose(LWC)
-    VV = np.array(VV, dtype=object)
-    VV = VV.astype(np.float64)
-    tempVV = np.zeros((31, 1440))
-    tempVV[:, timeloc] = np.transpose(VV)
-    Fn = np.array(Fn, dtype=object)
-    Fn = Fn.astype(np.float64)
-    tempFn = np.zeros((31, 64, 1440))
-    tempFn[:, :, timeloc] = np.reshape(np.transpose(Fn), (31, 64, float(len(Fn))/64))
-    Dn = np.array(Dn, dtype=object)
-    Dn = Dn.astype(np.float64)
-    tempDn = np.zeros((31, 64, 1440))
-    tempDn[:, :, timeloc] = np.reshape(np.transpose(Dn), (31, 64, float(len(Dn))/64))
-    Nn = np.array(Nn, dtype=object)
-    Nn = Nn.astype(np.float64)
-    tempNn = np.zeros((31, 64, 1440))
-    tempNn[:, :, timeloc] = np.reshape(np.transpose(Nn), (31, 64, float(len(Nn))/64))
+        HH = np.array(HH, dtype=object)
+        HH = HH.astype(np.float64)
+        tempHH = np.zeros((31, 1440))
+        tempHH[:, timeloc] = np.transpose(HH)
+        TsF = np.array(TsF, dtype=object)
+        TsF = TsF.astype(np.float64)
+        tempTsF = np.zeros((31, 1440))
+        tempTsF[:, timeloc] = np.transpose(TsF)
+        Pia = np.array(Pia, dtype=object)
+        Pia = Pia.astype(np.float64)
+        tempPia = np.zeros((31, 1440))
+        tempPia[:, timeloc] = np.transpose(Pia)
+        ZZ = np.array(ZZ, dtype=object)
+        ZZ = ZZ.astype(np.float64)
+        tempZZ = np.zeros((31, 1440))
+        tempZZ[:, timeloc] = np.transpose(ZZ)
+        RR = np.array(RR, dtype=object)
+        RR = RR.astype(np.float64)
+        tempRR = np.zeros((31, 1440))
+        tempRR[:, timeloc] = np.transpose(RR)
+        LWC = np.array(LWC, dtype=object)
+        LWC = LWC.astype(np.float64)
+        tempLWC = np.zeros((31, 1440))
+        tempLWC[:, timeloc] = np.transpose(LWC)
+        VV = np.array(VV, dtype=object)
+        VV = VV.astype(np.float64)
+        tempVV = np.zeros((31, 1440))
+        tempVV[:, timeloc] = np.transpose(VV)
+        Fn = np.array(Fn, dtype=object)
+        Fn = Fn.astype(np.float64)
+        tempFn = np.zeros((31, 64, 1440))
+        tempFn[:, :, timeloc] = np.reshape(np.transpose(Fn), (31, 64, float(len(Fn))/64.))
+        Dn = np.array(Dn, dtype=object)
+        Dn = Dn.astype(np.float64)
+        tempDn = np.zeros((31, 64, 1440))
+        tempDn[:, :, timeloc] = np.reshape(np.transpose(Dn), (31, 64, float(len(Dn))/64.))
+        Nn = np.array(Nn, dtype=object)
+        Nn = Nn.astype(np.float64)
+        tempNn = np.zeros((31, 64, 1440))
+        tempNn[:, :, timeloc] = np.reshape(np.transpose(Nn), (31, 64, float(len(Nn))/64.))
 
-    savename = savefile + get_mrr_filetime + 'MRR_AveData_' + get_mrr_filetime(files) + '.h5'
-    f = h5py.File(savename,"w")
-    h = f.create_dataset("H",HH)
-    h.attrs["name"] = "Height"
-    f.close
+        savename = savefile + get_mrr_filetime + 'MRR_AveData_' + get_mrr_filetime(files) + '.h5'
+        f = h5py.File(savename,"w")
+        h = f.create_dataset("H",HH)
+        h.attrs["name"] = "Height"
+        f.close()
