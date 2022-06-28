@@ -102,14 +102,12 @@ if __name__ == '__main__':
                 s = to_list(line)
                 Nn.append(s)
 
-        HH = np.array(HH, dtype=object)
-        HH = HH.astype(np.float64)
-        tempHH = np.zeros((31, 1440))
-        tempHH[:, timeloc] = np.transpose(HH)
-        TsF = np.array(TsF, dtype=object)
-        TsF = TsF.astype(np.float64)
-        tempTsF = np.zeros((31, 1440))
-        tempTsF[:, timeloc] = np.transpose(TsF)
+        HH = np.int16(np.array(HH))
+        tempHH = np.zeros((1440,31))
+        tempHH[timeloc,:] = HH
+        TsF = np.float32(np.array(TsF))
+        tempTsF = np.zeros((1440, 31))
+        tempTsF[timeloc,: ] = TsF
         Pia = np.array(Pia, dtype=object)
         Pia = Pia.astype(np.float64)
         tempPia = np.zeros((31, 1440))
@@ -122,6 +120,7 @@ if __name__ == '__main__':
         RR = RR.astype(np.float64)
         tempRR = np.zeros((31, 1440))
         tempRR[:, timeloc] = np.transpose(RR)
+        tempRR = np.round(tempRR)
         LWC = np.array(LWC, dtype=object)
         LWC = LWC.astype(np.float64)
         tempLWC = np.zeros((31, 1440))
@@ -132,19 +131,29 @@ if __name__ == '__main__':
         tempVV[:, timeloc] = np.transpose(VV)
         Fn = np.array(Fn, dtype=object)
         Fn = Fn.astype(np.float64)
-        tempFn = np.zeros((31, 64, 1440))
-        tempFn[:, :, timeloc] = np.reshape(np.transpose(Fn), (31, 64, len(Fn)//64))
+        tempFn = np.zeros((1440,31, 64))
+        tempFn[timeloc,:, : ] = np.reshape(np.transpose(Fn), (len(Fn)//64,31, 64))
         Dn = np.array(Dn, dtype=object)
         Dn = Dn.astype(np.float64)
-        tempDn = np.zeros((31, 64, 1440))
-        tempDn[:, :, timeloc] = np.reshape(np.transpose(Dn), (31, 64, len(Dn)//64))
+        tempDn = np.zeros(( 1440,31,64))
+        tempDn[timeloc,:, : ] = np.reshape(np.transpose(Dn), (len(Dn)//64, 31, 64))
         Nn = np.array(Nn, dtype=object)
         Nn = Nn.astype(np.float64)
-        tempNn = np.zeros((31, 64, 1440))
-        tempNn[:, :, timeloc] = np.reshape(np.transpose(Nn), (31, 64, len(Nn)//64))
+        tempNn = np.zeros((1440,31,64))
+        tempNn[timeloc,:, : ] = np.reshape(np.transpose(Nn), (len(Nn)//64, 31, 64))
 
         savename = savefile + 'MRR_AveData_' + get_mrr_filetime(files) + '.h5'
+        if os.path.exists(savename):
+            os.remove(savename)
         f = h5py.File(savename,"w")
-        h = f.create_dataset("H",data=tempHH)
-        h.attrs["name"] = "Height"
+        f["Height"] = tempHH
+        f["Transfer_Function"] = tempTsF
+        f["Path_Integrated_Attenuation"] = tempPia
+        f["Radar_Reflectivity"] = tempZZ
+        f["Rain_Rate"] = tempRR
+        f["Liquid_Water_Content"] = tempLWC
+        f["Fall_Velocity"] = tempVV
+        f["Spectral_Reflectivities"] = tempFn
+        f["Drop_Size"] = tempDn
+        f["Spectral_Drop_Densities"] = tempNn
         f.close()
