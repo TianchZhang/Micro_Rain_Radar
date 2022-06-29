@@ -45,7 +45,7 @@ def get_mrr_filetime(filen):
 
 
 if __name__ == '__main__':
-    filelist = get_filelist('E:\\DATA\MRR_AveData_raw\\', [])
+    filelist = get_filelist('E:\\DATA\MRR_AveData_raw\\202203', [])
     savefile = 'E:\\DATA\\h5_aveMRR\\'
 
     for files in filelist:
@@ -99,61 +99,60 @@ if __name__ == '__main__':
             elif line.startswith('N'):
                 s = to_list(line)
                 Nn.append(s)
-
-        HH = np.int16(np.array(HH, dtype=object))
-        tempHH = np.zeros((1440,31))
-        tempHH[timeloc,:] = HH
-        TsF = np.float64(np.array(TsF, dtype=object))
-        tempTsF = np.zeros((1440, 31))
-        tempTsF[timeloc,: ] = np.round(TsF,4)
-        Pia = np.float64(np.array(Pia, dtype=object))
-        tempPia = np.zeros((1440, 31))
-        tempPia[timeloc, :] = np.round(Pia,3)
-        ZZ = np.float64(np.array(ZZ, dtype=object))
-        tempZZ = np.zeros((1440, 31))
-        tempZZ[timeloc, :] = np.round(ZZ,2)
-        RR = np.float64(np.array(RR, dtype=object))
+        #HH = np.int16(np.array(HH, dtype=object))
+        # tempHH = np.zeros((1440,31))
+        # tempHH[timeloc,:] = HH
+        # TsF = np.float64(np.array(TsF, dtype=object))
+        # tempTsF = np.zeros((1440, 31))
+        # tempTsF[timeloc,: ] = np.round(TsF,4)
+        # Pia = np.float64(np.array(Pia, dtype=object))
+        # tempPia = np.zeros((1440, 31))
+        # tempPia[timeloc, :] = np.round(Pia,3)
+        # ZZ = np.float64(np.array(ZZ, dtype=object))
+        # tempZZ = np.zeros((1440, 31))
+        # tempZZ[timeloc, :] = np.round(ZZ,2)
+        RR = np.float64(np.array(RR))
         tempRR = np.zeros((1440, 31))
         tempRR[timeloc, :] = np.round(RR,2)
-        tempRR = np.round(tempRR)
-        LWC = np.float64(np.array(LWC, dtype=object))
-        tempLWC = np.zeros((1440, 31))
-        tempLWC[timeloc, :] = np.round(LWC,2)
-        VV = np.float64(np.array(VV, dtype=object))
-        tempVV = np.zeros((1440, 31))
-        tempVV[timeloc, :] = np.round(VV,2)
-        Fn = np.float64(np.array(Fn, dtype=object))
-        tempFn = np.zeros((1440,64,31))
-        tempFn[timeloc,:, : ] = np.reshape(np.round(Fn,2), (len(Fn)//64,64,31))
-        Dn = np.float64(np.array(Dn, dtype=object))
-        tempDn = np.zeros(( 1440,64,31))
-        tempDn[timeloc,:, : ] = np.reshape(np.round(Dn,4), (len(Dn)//64, 64, 31))
-        Nn = np.float64(np.array(Nn, dtype=object))
-        tempNn = np.zeros((1440,64,31))
-        tempNn[timeloc,:, : ] = np.reshape((Nn), (len(Nn)//64, 64, 31))
+        tempRR = tempRR
+        # LWC = np.float64(np.array(LWC, dtype=object))
+        # tempLWC = np.zeros((1440, 31))
+        # tempLWC[timeloc, :] = np.round(LWC,2)
+        # VV = np.float64(np.array(VV, dtype=object))
+        # tempVV = np.zeros((1440, 31))
+        # tempVV[timeloc, :] = np.round(VV,2)
+        # Fn = np.float64(np.array(Fn, dtype=object))
+        # tempFn = np.zeros((1440,64,31))
+        # tempFn[timeloc,:, : ] = np.reshape(np.round(Fn,2), (len(Fn)//64,64,31))
+        # Dn = np.float64(np.array(Dn, dtype=object))
+        # tempDn = np.zeros(( 1440,64,31))
+        # tempDn[timeloc,:, : ] = np.reshape(np.round(Dn,4), (len(Dn)//64, 64, 31))
+        # Nn = np.float64(np.array(Nn, dtype=object))
+        # tempNn = np.zeros((1440,64,31))
+        # tempNn[timeloc,:, : ] = np.reshape((Nn), (len(Nn)//64, 64, 31))
 
         savename = savefile + 'MRR_AveData_' + get_mrr_filetime(files) + '.h5'
         if os.path.exists(savename):
             os.remove(savename)
         f = h5py.File(savename,"w")
-        f.create_dataset("Height",data = tempHH,
-            compression = 'gzip',compression_opts = 7)
-        f.create_dataset("Transfer_Function",data = tempTsF,
-            compression = 'gzip',compression_opts = 7)
-        f.create_dataset("Path_Integrated_Attenuation",data = tempPia,
-            compression = 'gzip',compression_opts = 7)
-        f.create_dataset("Radar_Reflectivity",data = tempZZ,
-            compression = 'gzip',compression_opts = 7)
+        # f.create_dataset("Height",data = tempHH,
+        #     compression = 'gzip',compression_opts = 7)
+        # f.create_dataset("Transfer_Function",data = tempTsF,
+        #     compression = 'gzip',compression_opts = 7)
+        # f.create_dataset("Path_Integrated_Attenuation",data = tempPia,
+        #     compression = 'gzip',compression_opts = 7)
+        # f.create_dataset("Radar_Reflectivity",data = tempZZ,
+        #     compression = 'gzip',compression_opts = 7)
         f.create_dataset("Rain_Rate",data = tempRR,
             compression = 'gzip',compression_opts = 7)
-        f.create_dataset("Fall_Velocity",data = tempVV,
-            compression = 'gzip',compression_opts = 7)
-        f.create_dataset("Liquid_Water_Content",data = tempLWC,
-            compression = 'gzip',compression_opts = 7)
-        f.create_dataset("Spectral_Reflectivities",data = tempFn,
-            compression = 'gzip',compression_opts = 7)
-        f.create_dataset("Drop_Size",data = tempDn,
-            compression = 'gzip',compression_opts = 7)
-        f.create_dataset("Spectral_Drop_Densities",data = tempNn,
-            compression = 'gzip',compression_opts = 7)
+        # f.create_dataset("Fall_Velocity",data = tempVV,
+        #     compression = 'gzip',compression_opts = 7)
+        # f.create_dataset("Liquid_Water_Content",data = tempLWC,
+        #     compression = 'gzip',compression_opts = 7)
+        # f.create_dataset("Spectral_Reflectivities",data = tempFn,
+        #     compression = 'gzip',compression_opts = 7)
+        # f.create_dataset("Drop_Size",data = tempDn,
+        #     compression = 'gzip',compression_opts = 7)
+        # f.create_dataset("Spectral_Drop_Densities",data = tempNn,
+        #     compression = 'gzip',compression_opts = 7)
         f.close()
