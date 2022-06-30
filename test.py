@@ -1,12 +1,10 @@
-from uuid import RESERVED_FUTURE
 import numpy as np
-import os
-from os import path 
-temp = np.arange(0,10,0.258)
+temp = np.arange(1,201)
 print(temp)
-temp = np.round(temp,2)
+temp = np.reshape(temp,(40,5))
 print(temp)
-
+temp = np.reshape(temp,(10,4,5))
+print(temp)
 #tempt = np.arange(20)
 #temptt = np.delete(tempt,[5,10],None)
 #temp[temptt-1]=temptt
@@ -17,6 +15,4 @@ print(temp)
 #print(nntemp)
 #print(np.transpose(temp))
 #print(len(temp))
-
-print(np.zeros((3,2,5)))
  
