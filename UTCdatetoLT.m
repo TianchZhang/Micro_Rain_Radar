@@ -21,30 +21,30 @@ for lnum = 1:length(listing)
     SDD = zeros(31,64,1440);
     SR = zeros(31,64,1440);
     
-    TF(:,1:960) = h5read([utcfile,listing(lnum).name],'/Transfer_Function',[1 481],[31 960]);
-    FV(:,1:960) = h5read([utcfile,listing(lnum).name],'/Fall_Velocity',[1 481],[31 960]);
-    HT(:,1:960) = h5read([utcfile,listing(lnum).name],'/Height',[1 481],[31 960]);
-    LWC(:,1:960) = h5read([utcfile,listing(lnum).name],'/Liquid_Water_Content',[1 481],[31 960]);
-    PIA(:,1:960) = h5read([utcfile,listing(lnum).name],'/Path_Integrated_Attenuation',[1 481],[31 960]);
-    RF(:,1:960) = h5read([utcfile,listing(lnum).name],'/Radar_Reflectivity',[1 481],[31 960]);
-    RR(:,1:960) = h5read([utcfile,listing(lnum).name],'/Rain_Rate',[1 481],[31 960]);
-    DS(:,:,1:960) = h5read([utcfile,listing(lnum).name],'/Drop_Size',[1 1 481],[31 64 960]);
-    SDD(:,:,1:960) = h5read([utcfile,listing(lnum).name],'/Spectral_Drop_Densities',[1 1 481],[31 64 960]);
-    SR(:,:,1:960) = h5read([utcfile,listing(lnum).name],'/Spectral_Reflectivities',[1 1 481],[31 64 960]);
+    TF(:,481:end) = h5read([utcfile,listing(lnum).name],'/Transfer_Function',[1 1],[31 960]);
+    FV(:,481:end) = h5read([utcfile,listing(lnum).name],'/Fall_Velocity',[1 1],[31 960]);
+    HT(:,481:end) = h5read([utcfile,listing(lnum).name],'/Height',[1 1],[31 960]);
+    LWC(:,481:end) = h5read([utcfile,listing(lnum).name],'/Liquid_Water_Content',[1 1],[31 960]);
+    PIA(:,481:end) = h5read([utcfile,listing(lnum).name],'/Path_Integrated_Attenuation',[1 1],[31 960]);
+    RF(:,481:end) = h5read([utcfile,listing(lnum).name],'/Radar_Reflectivity',[1 1],[31 960]);
+    RR(:,481:end) = h5read([utcfile,listing(lnum).name],'/Rain_Rate',[1 1],[31 960]);
+    DS(:,:,481:end) = h5read([utcfile,listing(lnum).name],'/Drop_Size',[1 1 1],[31 64 960]);
+    SDD(:,:,481:end) = h5read([utcfile,listing(lnum).name],'/Spectral_Drop_Densities',[1 1 1],[31 64 960]);
+    SR(:,:,481:end) = h5read([utcfile,listing(lnum).name],'/Spectral_Reflectivities',[1 1 1],[31 64 960]);
     
     formatout = 'yyyymmdd';
-    dtemp = ['MRR_AveData_',datestr(dnm+1,formatout),'.h5'];
+    dtemp = ['MRR_AveData_',datestr(dnm-1,formatout),'.h5'];
     if isfile([utcfile,dtemp])
-        TF(:,961:end) = h5read([utcfile,dtemp],'/Transfer_Function',[1 1],[31 480]);
-        FV(:,961:end) = h5read([utcfile,dtemp],'/Fall_Velocity',[1 1],[31 480]);
-        HT(:,961:end) = h5read([utcfile,dtemp],'/Height',[1 1],[31 480]);
-        LWC(:,961:end) = h5read([utcfile,dtemp],'/Liquid_Water_Content',[1 1],[31 480]);
-        PIA(:,961:end) = h5read([utcfile,dtemp],'/Path_Integrated_Attenuation',[1 1],[31 480]);
-        RF(:,961:end) = h5read([utcfile,dtemp],'/Radar_Reflectivity',[1 1],[31 480]);
-        RR(:,961:end) = h5read([utcfile,dtemp],'/Rain_Rate',[1 1],[31 480]);
-        DS(:,:,961:end) =h5read([utcfile,dtemp],'/Drop_Size',[1 1 1],[31 64 480]);
-        SDD(:,:,961:end) = h5read([utcfile,dtemp],'/Spectral_Drop_Densities',[1 1 1],[31 64 480]);
-        SR(:,:,961:end) = h5read([utcfile,dtemp],'/Spectral_Reflectivities',[1 1 1],[31 64 480]);
+        TF(:,1:480) = h5read([utcfile,dtemp],'/Transfer_Function',[1 961],[31 480]);
+        FV(:,1:480) = h5read([utcfile,dtemp],'/Fall_Velocity',[1 961],[31 480]);
+        HT(:,1:480) = h5read([utcfile,dtemp],'/Height',[1 961],[31 480]);
+        LWC(:,1:480) = h5read([utcfile,dtemp],'/Liquid_Water_Content',[1 961],[31 480]);
+        PIA(:,1:480) = h5read([utcfile,dtemp],'/Path_Integrated_Attenuation',[1 961],[31 480]);
+        RF(:,1:480) = h5read([utcfile,dtemp],'/Radar_Reflectivity',[1 961],[31 480]);
+        RR(:,1:480) = h5read([utcfile,dtemp],'/Rain_Rate',[1 961],[31 480]);
+        DS(:,:,1:480) =h5read([utcfile,dtemp],'/Drop_Size',[1 1 961],[31 64 480]);
+        SDD(:,:,1:480) = h5read([utcfile,dtemp],'/Spectral_Drop_Densities',[1 1 961],[31 64 480]);
+        SR(:,:,1:480) = h5read([utcfile,dtemp],'/Spectral_Reflectivities',[1 1 961],[31 64 480]);
     end
     if sum(sum(fix(HT))) == 0
         continue

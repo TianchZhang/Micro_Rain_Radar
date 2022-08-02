@@ -9,7 +9,7 @@ load('E:\DATA\Parsivel_temporary\DSD_parameters.mat','central_diameter');
 load('E:\DATA\Parsivel_temporary\DSD_parameters.mat', 'diameter_bandwidth');
 
 file_day = dir([file_root,'*.h5']);
-mrrf = 'E:\DATA\MRR\h5_aveMRR\MRR_AveData_20220330.h5';
+mrrf = 'E:\DATA\MRR\h5_aveMRR_LT\MRR_AveData_20220330.h5';
 ottf = 'E:\DATA\OTTParsivel\nonQC2019-\20220330.h5';
 mrrfh = 'E:\DATA\MRR\0330_LT.h5';
 NDott = h5read(ottf,'/ND');
@@ -62,8 +62,8 @@ DSD_show_MRR(DSh(:,1,1),NDmrrh(:,1,:));
 ax3 = subplot(3,1,3);
 DSD_show_MRR(DS(1,:,1),NDmrr(1,:,:));
 
-%%
-for ik = 1:31
-   figure;
-   DSD_show_MRR(DS(ik,:,1),NDmrr(ik,:,:));
-end
+% %%
+% for ik = 1:31
+%    figure;
+%    DSD_show_MRR(DS(ik,:,1),NDmrr(ik,:,:));
+% end
