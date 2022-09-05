@@ -34,7 +34,7 @@ for lnum = 1:length(listing)
     D0 = zeros(31,1440);
     Nt = zeros(31,1440);
     
-    %background of Spectral Drop Densities
+
     Hloc = find(sum(HT,1) > 0);
     Rloc = find(RR(1,:) < 0.01);
     DS = reshape(DS(:,:,Hloc(1)),31,64);

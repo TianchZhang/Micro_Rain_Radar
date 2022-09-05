@@ -4,10 +4,11 @@
 % 2022.07.04 by zhangtc
 
 function DSD_show_MRR(drop_size,drop_densities)
+
 drop_densities(drop_densities<1)=1;
 tempdsh = double(drop_size);
 tempndh = double(reshape(log10(drop_densities),[64,1440]));
-
+set(gcf,'Position',get(0,'ScreenSize')*0.5);
 tar2 = pcolor(1:1:1440,tempdsh(tempdsh>0),tempndh(tempdsh>0,:));
 shading flat
 ax2 = gca;
