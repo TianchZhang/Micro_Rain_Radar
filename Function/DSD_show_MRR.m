@@ -4,6 +4,7 @@
 % 2022.07.04 by zhangtc
 
 function DSD_show_MRR(drop_size,drop_densities)
+set(gcf,'Position',get(0,'ScreenSize')*0.5);
 drop_densities(drop_densities<1)=1;
 tempdsh = double(drop_size);
 tempndh = double(reshape(log10(drop_densities),[64,1440]));
