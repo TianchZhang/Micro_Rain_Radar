@@ -34,7 +34,6 @@ ax2.YTickLabel = {'0', '1', '2', '3', '4', '5', '6'};
 ax2.YLabel.String = 'Height(km)';
 ax2.YGrid = 'on';
 
-
 cm2 = colormap(ax2,[jet(12);[0.49,0.18,0.56]]);
 c2 = colorbar;
 c2.Label.String = 'mm\cdoth^{-1}';
