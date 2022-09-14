@@ -122,7 +122,7 @@ for ih = 1:15
     DD(:,:) = log10(tempND(ih,:,:));
     figure(ih);
     set(gcf,'Position',get(0,'ScreenSize')*0.5);
-    tempDS = double(DS2(ih,:));
+    tempDS = double(DS(ih,:));
     figure(ih);
     set(gcf,'Position',get(0,'ScreenSize')*0.5);
     tar2 = pcolor(1320:1:1440,tempDS(tempDS>0),DD(tempDS>0,:));
@@ -187,12 +187,11 @@ saveas(gcf,['E:\DATA\MRR\Pictures\Casesofshallowstratiform\ND20220512_ott.png'])
 %DSD
 loc = 1320-15:1440;
 tempND2 =  ND2(1:15,:,loc)*10e-3;
-tempND2(tempND2<1) = 1;
+tempND2(tempND2<1) = nan;
 figure;
 set(gcf,'Position',get(0,'ScreenSize')*0.5);
-for ih = 1:13
+for ih = 1:9
     if length(find(RR2(ih,loc)>0.01))>3
-        ih
         ihND2 = reshape(tempND2(ih,:,:),64,[]);
         ihND2(ihND2<=0) = nan;
         tempihND2 = mean(ihND2,2,'omitnan');
@@ -203,15 +202,15 @@ for ih = 1:13
         %         p1.MarkerSize = 3;
         %         p1.LineStyle = ':';
         hold on
-        plot(tempDS(tempDS>0),tempihND2(tempDS>0),'-.','LineWidth',1.5,'Color',GMT_paired(ih+1,:));
+        plot(tempDS(tempDS>0),tempihND2(tempDS>0),'-','LineWidth',1.5,'Color',GMT_paired(ih+1,:));
         
         %         title({['Micro Rain Radar','@',num2str(ih*200),'m'];'2022.05.09';})
         %         saveas(gcf,['E:\DATA\MRR\Pictures\Casesofshallowstratiform\DSD20220509_',num2str(200*ih),'.png']);
     end
     hold off
     ax1 = gca;
-    ax1.XLim = [0.2 1.6];
-    ax1.XTick = 0.2:0.2:1.6;
+    ax1.XLim = [0.2 1.8];
+    ax1.XTick = 0.2:0.2:1.8;
     ax1.YScale = 'log';
     ax1.YLim = [1 10e5];
     ax1.YTick = [1 10e1 10e2 10e3 10e4 10e5];
@@ -224,7 +223,7 @@ for ih = 1:13
     ax1.XLabel.String = 'D(mm)';
     ax1.YLabel.String = 'N(D)(m^{-3}\cdotmm^{-1})';
     
-    title('Micro Rain Radar');
+    title({'Raindrop Size Distribution';'Micro Rain Radar'});
     legend('0.2 km','0.4 km','0.6 km','0.8 km','1.0 km','1.2 km','1.4 km','1.6 km','1.8 km');
     saveas(gcf,['E:\DATA\MRR\Pictures\Casesofshallowstratiform\DSD20220512_mrr.png']);
 end
