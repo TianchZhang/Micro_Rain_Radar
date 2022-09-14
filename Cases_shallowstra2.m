@@ -27,8 +27,8 @@ ND2 = h5read(mrrname2,'/Spectral_Drop_Densities');
 DS = h5read(mrrpname2,'/Drop_Size');
 rf2 = find(rain0512 >0);
 tf2 = find(type0512>1);
-figure;
-plot(1:1440,rain0512,1:1440,type0512);
+% figure;
+% plot(1:1440,rain0512,1:1440,type0512);
 %23:00~24:00
 %%
 %ZZ
@@ -225,8 +225,8 @@ for ih = 1:13
     ax1.YLabel.String = 'N(D)(m^{-3}\cdotmm^{-1})';
     
     title('Micro Rain Radar');
-%     legend('0.2 km','0.4 km','0.6 km','0.8 km','1.0 km','1.2 km','1.4 km','1.6 km','1.8 km');
-%     saveas(gcf,['E:\DATA\MRR\Pictures\Casesofshallowstratiform\DSD20220512_mrr.png']);
+    legend('0.2 km','0.4 km','0.6 km','0.8 km','1.0 km','1.2 km','1.4 km','1.6 km','1.8 km');
+    saveas(gcf,['E:\DATA\MRR\Pictures\Casesofshallowstratiform\DSD20220512_mrr.png']);
 end
 
 %%

@@ -10,6 +10,7 @@ mrrpname1 = 'E:\DATA\MRR\h5_parameters_LT\MRR_Parameters_20220509.h5';
 ottname1 = 'E:\DATA\OTTParsivel\nonQC2019mR-\20220509.h5';
 load('E:\DATA\Parsivel_temporary\DSD_parameters.mat','central_diameter');
 load('E:\DATA\Parsivel_temporary\DSD_parameters.mat', 'diameter_bandwidth');
+load('E:\Codes\Micro_Rain_Radar\Colormap_GMT_paired.mat');
 
 temp_centr_dia = central_diameter;
 temp_dia_bandw = diameter_bandwidth;
