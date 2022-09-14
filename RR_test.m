@@ -6,7 +6,7 @@ savepath ='E:\DATA\MRR\Pictures\RR\';
 file_root = 'E:\DATA\MRR\h5_aveMRR_LT\';
 
 listing = dir([file_root,'*.h5']);
-for fnum = 13:13%length(listing)
+for fnum = 13:length(listing)
     daynm = listing(fnum).name(13:20);
     ht = h5read([file_root,listing(fnum).name],'/Height');
     RR = h5read([file_root,listing(fnum).name],'/Rain_Rate');
