@@ -63,7 +63,8 @@ tempND = [ottND1(1234:1263,3:13);ottND1(1413:1440,3:13);ottND2(1333:1409,3:13)];
 tempND(tempND<1) = 1;
 figure;
 set(gcf,'Position',get(0,'ScreenSize')*0.5);
-p1=plot(central_diameter(3:13),mean(tempND,1),'b');
+p1=plot(central_diameter(3:13),mean(tempND,1),...
+            'Color',[0.3,0.5,0.9],'LineWidth', 2);
 p1.Marker = 'd';
 p1.MarkerSize = 3;
 p1.MarkerFaceColor = 'b';
@@ -84,6 +85,7 @@ ax1.LineWidth = 1.5;
 ax1.XLabel.String = 'D(mm)';
 ax1.YLabel.String = 'N(D)(m^{-3}\cdotmm^{-1})';
 title('OTT Parsivel');
+saveas(gcf,'E:\DATA\MRR\Pictures\Casesofshallowstratiform\DSD_ottcases.png');
 %%
 mrrflag1 = zeros(13,1440);
 mrrflag2 = zeros(13,1440);
