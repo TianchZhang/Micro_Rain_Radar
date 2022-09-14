@@ -36,7 +36,7 @@ ax2.YGrid = 'on';
 
 cm2 = colormap(ax2,[jet(12);[0.49,0.18,0.56]]);
 c2 = colorbar;
-c2.Label.String = 'mm/cdoth^{-1}';
+c2.Label.String = 'mm\cdoth^{-1}';
 caxis([0.01 13.01]);
 c2.FontSize = 12;
 c2.Ticks = [0 1 2 3 4 5 6 7 8 9 10 11 12];
