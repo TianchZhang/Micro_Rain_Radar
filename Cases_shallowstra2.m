@@ -11,6 +11,7 @@ ottname2 = 'E:\DATA\OTTParsivel\nonQC2019mR-\20220512.h5';
 load('E:\DATA\Parsivel_temporary\DSD_parameters.mat','central_diameter');
 load('E:\DATA\Parsivel_temporary\DSD_parameters.mat', 'diameter_bandwidth');
 load('E:\Codes\Micro_Rain_Radar\Colormap_GMT_paired.mat');
+load('E:\DATA\MRR\MRR_BG','BGND');
 
 temp_centr_dia = central_diameter;
 temp_dia_bandw = diameter_bandwidth;
@@ -23,7 +24,7 @@ type0512 = h5read(ottname2,'/typeflag');
 rain0512 = h5read(ottname2,'/rainflag');
 ZZ2 = h5read(mrrname2,'/Radar_Reflectivity');
 RR2= h5read(mrrname2,'/Rain_Rate');
-ND2 = h5read(mrrname2,'/Spectral_Drop_Densities');
+ND2 = h5read(mrrname2,'/Spectral_Drop_Densities')*10e-3-repmat(BGND,1,1,1440);
 DS = h5read(mrrpname2,'/Drop_Size');
 rf2 = find(rain0512 >0);
 tf2 = find(type0512>1);
@@ -113,18 +114,16 @@ title({'2022.05.12';'Radar Rate'});
 saveas(gcf,'E:\DATA\MRR\Pictures\Casesofshallowstratiform\RR20220512.png');
 %%
 %ND
-tempND = ND2(1:15,:,1320:1440)*10e-3;
+tempND = ND2(1:15,:,1320:1440);
 tempND(tempND<1) = 1;
-for ih = 1:15
+for ih = 1:11
      DD = zeros(64,121);
     %     tRloc = find(RR(ih,1200:1440)>0.01);
     %     DD(:,tRloc) = log10(tempND(ih,:,tRloc));
-    DD(:,:) = log10(tempND(ih,:,:));
+    DD(:,:) = log10(reshape(tempND(ih,:,:),64,[]));
     figure(ih);
     set(gcf,'Position',get(0,'ScreenSize')*0.5);
     tempDS = double(DS(ih,:));
-    figure(ih);
-    set(gcf,'Position',get(0,'ScreenSize')*0.5);
     tar2 = pcolor(1320:1:1440,tempDS(tempDS>0),DD(tempDS>0,:));
     shading flat
     ax2 = gca;
@@ -142,13 +141,18 @@ for ih = 1:15
     ax2.YTickLabel = {'0', '2', '4', '6'};
     ax2.YLabel.String = 'Diameter(mm)';
     ax2.YGrid = 'on';
-    cm2 = colormap(ax2,[[1,1,1];jet(12);[0.49,0.18,0.56]]);
+    cm2 = colormap(ax2,[[1,1,1];jet(8);[0.49,0.18,0.56]]);
     c2 = colorbar;
     c2.Label.String = 'log_{10}N(D)';
-    caxis([-0.49 6.5]);
+    caxis([-0.49 4.51]);
     c2.FontSize = 12;
-    c2.Ticks = [0 0.5 1.0 1.5 2.0 2.5 3.0 3.5 4.0,4.5,5,5.5,6];
-    c2.TickLabels = {'0','0.5','1.0','1.5','2.0','2.5','3.0','3.5','4.0','4.5','5.0','5.5','6.0'};
+    c2.Ticks = [0 0.5 1.0 1.5 2.0 2.5 3.0 3.5 4.0];
+    c2.TickLabels = {'0','0.5','1.0','1.5','2.0','2.5','3.0','3.5','4.0'};
+
+%     caxis([-0.49 6.01]);
+%     c2.FontSize = 12;
+%     c2.Ticks = [0 0.5 1.0 1.5 2.0 2.5 3.0 3.5 4.0,4.5,5,5.5];
+%     c2.TickLabels = {'0','0.5','1.0','1.5','2.0','2.5','3.0','3.5','4.0','4.5','5.0','5.5'};
     title({'2022.05.12';['Rain Drop Densities','@',num2str(ih*200),'m'];})
     saveas(gcf,['E:\DATA\MRR\Pictures\Casesofshallowstratiform\ND20220512_',num2str(200*ih),'.png']);
     close
@@ -186,7 +190,7 @@ saveas(gcf,['E:\DATA\MRR\Pictures\Casesofshallowstratiform\ND20220512_ott.png'])
 %%
 %DSD
 loc = 1320-15:1440;
-tempND2 =  ND2(1:15,:,loc)*10e-3;
+tempND2 =  ND2(1:15,:,loc);
 tempND2(tempND2<1) = nan;
 figure;
 set(gcf,'Position',get(0,'ScreenSize')*0.5);
@@ -194,7 +198,7 @@ for ih = 1:9
     if length(find(RR2(ih,loc)>0.01))>3
         ihND2 = reshape(tempND2(ih,:,:),64,[]);
         ihND2(ihND2<=0) = nan;
-        tempihND2 = mean(ihND2,2,'omitnan');
+        tempihND2 = mean(ihND2,2,'omitnan')-BGND(ih,:);
         tempDS = DS(ih,:);
         %         p1=plot(tempDS(tempDS>0),tempihND1(tempDS>0),...
         %             'Color',[0.3,0.5,0.9],'LineWidth', 2);
@@ -225,7 +229,7 @@ for ih = 1:9
     
     title({'Raindrop Size Distribution';'Micro Rain Radar'});
     legend('0.2 km','0.4 km','0.6 km','0.8 km','1.0 km','1.2 km','1.4 km','1.6 km','1.8 km');
-    saveas(gcf,['E:\DATA\MRR\Pictures\Casesofshallowstratiform\DSD20220512_mrr.png']);
+%     saveas(gcf,['E:\DATA\MRR\Pictures\Casesofshallowstratiform\DSD20220512_mrr.png']);
 end
 
 %%

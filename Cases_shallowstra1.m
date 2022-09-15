@@ -2,9 +2,11 @@
 %Cases  of shallow stratiform
 % History:
 % 2022.09.07 by zhangtc
+% update 2022.09.15
 
 %%
 clear
+shallowday = ['2021.12.16';];
 mrrname1 = 'E:\DATA\MRR\h5_aveMRR_LT\MRR_AveData_20220509.h5';
 mrrpname1 = 'E:\DATA\MRR\h5_parameters_LT\MRR_Parameters_20220509.h5';
 ottname1 = 'E:\DATA\OTTParsivel\nonQC2019mR-\20220509.h5';

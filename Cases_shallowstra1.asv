@@ -2,14 +2,17 @@
 %Cases  of shallow stratiform
 % History:
 % 2022.09.07 by zhangtc
+% update 2022.09.15
 
 %%
 clear
+shal
 mrrname1 = 'E:\DATA\MRR\h5_aveMRR_LT\MRR_AveData_20220509.h5';
 mrrpname1 = 'E:\DATA\MRR\h5_parameters_LT\MRR_Parameters_20220509.h5';
 ottname1 = 'E:\DATA\OTTParsivel\nonQC2019mR-\20220509.h5';
 load('E:\DATA\Parsivel_temporary\DSD_parameters.mat','central_diameter');
 load('E:\DATA\Parsivel_temporary\DSD_parameters.mat', 'diameter_bandwidth');
+load('E:\Codes\Micro_Rain_Radar\Colormap_GMT_paired.mat');
 
 temp_centr_dia = central_diameter;
 temp_dia_bandw = diameter_bandwidth;
@@ -113,7 +116,7 @@ saveas(gcf,'E:\DATA\MRR\Pictures\Casesofshallowstratiform\RR20220509.png');
 loc1 = 1234-15:1263;
 loc2 = 1413-15:1440;
 tempND1 =  ND1(1:13,:,[loc1,loc2])*10e-3;
-tempND1(tempND1<1) = 1;
+tempND1(tempND1<1) = nan;
 
 figure;
 set(gcf,'Position',get(0,'ScreenSize')*0.5);
@@ -124,43 +127,36 @@ for ih = 1:13
         ihND1(ihND1<=0) = nan;
         tempihND1 = mean(ihND1,2,'omitnan');
         tempDS = DS(ih,:);
-        
         %         p1=plot(tempDS(tempDS>0),tempihND1(tempDS>0),...
         %             'Color',[0.3,0.5,0.9],'LineWidth', 2);
         %         % p1.Marker = 'd';
         %         p1.MarkerSize = 3;
         %         p1.LineStyle = ':';
-        %         hold on
-        plot(tempDS(tempDS>0),tempihND1(tempDS>0),'--','LineWidth',2);
-        %                 p1.Marker = 'd';
-        p1.MarkerSize = 3;
-        %         p1.MarkerFaceColor = 'b';
-        p1.LineStyle = ':';
-        p1.LineWidth = 2;
         hold on
+        plot(tempDS(tempDS>0),tempihND1(tempDS>0),'-','LineWidth',1.5,'Color',GMT_paired(ih+1,:));
         
         %         title({['Micro Rain Radar','@',num2str(ih*200),'m'];'2022.05.09';})
         %         saveas(gcf,['E:\DATA\MRR\Pictures\Casesofshallowstratiform\DSD20220509_',num2str(200*ih),'.png']);
     end
     hold off
     ax1 = gca;
-        ax1.XLim = [0 2];
-        ax1.XTick = 0:0.2:2;
-        ax1.YScale = 'log';
-        ax1.YLim = [1 10e5];
-        ax1.YTick = [1 10e1 10e2 10e3 10e4 10e5];
-        ax1.YTickLabel = {'10^{0}','10^{1}','10^{2}','10^{3}','10^{4}','10^{5}'};
-        ax1.YMinorTick = 'on';
-        ax1.Box = 'on';
-        ax1.FontSize = 12;
-        ax1.TickLength = [0.015 0.02];
-        ax1.LineWidth = 1.5;
-        ax1.XLabel.String = 'D(mm)';
-        ax1.YLabel.String = 'N(D)(m^{-3}\cdotmm^{-1})';
-        
-        title('Micro Rain Radar');
-    legend('0.2 km','0.4 km','0.6 km','0.8 km','1.0 km','1.2 km','1.4 km','1.6 km','1.8 km');
+    ax1.XLim = [0.2 1.8];
+    ax1.XTick = 0.2:0.2:1.8;
+    ax1.YScale = 'log';
+    ax1.YLim = [1 10e5];
+    ax1.YTick = [1 10e1 10e2 10e3 10e4 10e5];
+    ax1.YTickLabel = {'10^{0}','10^{1}','10^{2}','10^{3}','10^{4}','10^{5}'};
+    ax1.YMinorTick = 'on';
+    ax1.Box = 'on';
+    ax1.FontSize = 12;
+    ax1.TickLength = [0.015 0.02];
+    ax1.LineWidth = 1.5;
+    ax1.XLabel.String = 'D(mm)';
+    ax1.YLabel.String = 'N(D)(m^{-3}\cdotmm^{-1})';
     
+    title({'Raindrop Size Distribution';'Micro Rain Radar'});
+    legend('0.2 km','0.4 km','0.6 km','0.8 km','1.0 km','1.2 km','1.4 km','1.6 km','1.8 km');
+    saveas(gcf,['E:\DATA\MRR\Pictures\Casesofshallowstratiform\DSD20220509_mrr.png']);
 end
 
 %%
