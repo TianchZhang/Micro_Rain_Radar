@@ -16,8 +16,8 @@ for fnum = 1:length(listing)
         legend('rainflag','typeflag');
         title(listing(fnum).name(1:8));
         savename = [listing(fnum).name(1:8),'.png'];
-%         saveas(gcf,[savepath,savename]);
-%         close
+        saveas(gcf,[savepath,savename]);
+        close
     end
     
     

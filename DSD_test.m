@@ -18,7 +18,7 @@ for fnum = 13:length(listing)
         end
         HT = h5read([file_root,listing(fnum).name],'/Height');
         RR = h5read([file_root,listing(fnum).name],'/Rain_Rate');
-        ND = h5read([file_root,listing(fnum).name],'/Spectral_Drop_Densities') * 10e-3;
+        ND = h5read([file_root,listing(fnum).name],'/Spectral_Drop_Densities') * 1e-3 - repmat(BGND,1,1,1440);
         ND(ND<1) = 1;
         DS = h5read([par_root,'MRR_Parameters',listing(fnum).name(end-11:end)],'/Drop_Size');
         
@@ -26,7 +26,7 @@ for fnum = 13:length(listing)
             figure(ih);
             %             tRloc = find(RR(ih,:)<0.01);
             %             ND(ih,:,tRloc) = 1;
-            tempND = reshape(ND(ih,:,:),64,[])-repmat(BGND(ih,:).',1,1440);
+            tempND = reshape(ND(ih,:,:),64,[]);
             DSD_show_MRR(DS(ih,:),tempND);
             title({['Rain Drop Densities','@',num2str(ih*200),'m'];[daynm(1:4),'-',daynm(5:6),'-',daynm(7:8)]})
             

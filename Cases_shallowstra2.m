@@ -189,16 +189,16 @@ title({'2022.05.12';'Rain Drop Densities';})
 saveas(gcf,['E:\DATA\MRR\Pictures\Casesofshallowstratiform\ND20220512_ott.png']);
 %%
 %DSD
-loc = 1320-15:1440;
+loc = 1333-15:1409;
 tempND2 =  ND2(1:15,:,loc);
-tempND2(tempND2<1) = nan;
+tempND2(tempND2<10e-4) = nan;
 figure;
 set(gcf,'Position',get(0,'ScreenSize')*0.5);
-for ih = 1:9
+for ih = 1:13
     if length(find(RR2(ih,loc)>0.01))>3
         ihND2 = reshape(tempND2(ih,:,:),64,[]);
         ihND2(ihND2<=0) = nan;
-        tempihND2 = mean(ihND2,2,'omitnan')-BGND(ih,:);
+        tempihND2 = mean(ihND2,2,'omitnan');
         tempDS = DS(ih,:);
         %         p1=plot(tempDS(tempDS>0),tempihND1(tempDS>0),...
         %             'Color',[0.3,0.5,0.9],'LineWidth', 2);
@@ -216,9 +216,9 @@ for ih = 1:9
     ax1.XLim = [0.2 1.8];
     ax1.XTick = 0.2:0.2:1.8;
     ax1.YScale = 'log';
-    ax1.YLim = [1 10e5];
-    ax1.YTick = [1 10e1 10e2 10e3 10e4 10e5];
-    ax1.YTickLabel = {'10^{0}','10^{1}','10^{2}','10^{3}','10^{4}','10^{5}'};
+%     ax1.YLim = [10e-2 10e8];
+%     ax1.YTick = [10e-2 10e-1 10e0 10e1 10e2 10e3 10e4 10e5 10e6 10e7];
+%     ax1.YTickLabel = {'10^{0}','10^{1}','10^{2}','10^{3}','10^{4}','10^{5}'};
     ax1.YMinorTick = 'on';
     ax1.Box = 'on';
     ax1.FontSize = 12;

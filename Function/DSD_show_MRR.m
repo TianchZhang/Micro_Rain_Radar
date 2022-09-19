@@ -6,6 +6,7 @@
 function DSD_show_MRR(drop_size,drop_densities)
 set(gcf,'Position',get(0,'ScreenSize')*0.5);
 drop_densities(drop_densities<1)=1;
+drop_densities(drop_densities>1e6.01)=1e6;
 tempdsh = double(drop_size);
 tempndh = double(reshape(log10(drop_densities),[64,1440]));
 
@@ -29,10 +30,10 @@ ax2.YLabel.String = 'Diameter(mm)';
 ax2.YGrid = 'on';
 
 
-cm2 = colormap(ax2,[[1,1,1];jet(12);[0.49,0.18,0.56]]);
+cm2 = colormap(ax2,[[1,1,1];jet(11);[0.49,0.18,0.56]]);
 c2 = colorbar;
 c2.Label.String = 'log_{10}N(D)';
-caxis([-0.49 6.5]);
+caxis([-0.49 6.01]);
 c2.FontSize = 12;
-c2.Ticks = [0 0.5 1.0 1.5 2.0 2.5 3.0 3.5 4.0,4.5,5,5.5,6];
-c2.TickLabels = {'0','0.5','1.0','1.5','2.0','2.5','3.0','3.5','4.0','4.5','5.0','5.5','6.0'};
+c2.Ticks = [0 0.5 1.0 1.5 2.0 2.5 3.0 3.5 4.0,4.5,5,5.5];
+c2.TickLabels = {'0','0.5','1.0','1.5','2.0','2.5','3.0','3.5','4.0','4.5','5.0','5.5'};
