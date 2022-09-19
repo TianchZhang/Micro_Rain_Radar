@@ -17,7 +17,7 @@ file_root = 'E:\DATA\MRR\h5_aveMRR_LT\';
 pfile_root = 'E:\DATA\MRR\h5_parameters_LT\';
 for in = 1:7
     DS = h5read(['E:\DATA\MRR\h5_parameters_LT\MRR_Parameters_',bkday(in,:),'.h5'],'/Drop_Size');
-    tempND = h5read([file_root,'MRR_AveData_',bkday(in,:),'.h5'],'/Spectral_Drop_Densities')*10e-3;
+    tempND = h5read([file_root,'MRR_AveData_',bkday(in,:),'.h5'],'/Spectral_Drop_Densities')*1e-3;
     ND = cat(3,ND,tempND);
 end
 ND(ND<0) = nan;
@@ -36,9 +36,9 @@ ax1 = gca;
 ax1.XLim = [0 5.5];
 ax1.XTick = 0:0.5:5.5;
 ax1.YScale = 'log';
-ax1.YLim = [10e-6 10e6];
-%         ax1.YTick = [10e-5 10e0 10e1 10e2 10e3 10e4 10e5 10e6];
-%         ax1.YTickLabel = {'10^{0}','10^{1}','10^{2}','10^{3}','10^{4}','10^{5}'};
+ax1.YLim = [1e-6 1e6];
+%         ax1.YTick = [1e-6 1e-4 1e-2 1e0 10e2 10e4 1e6];
+%         ax1.YTickLabel = {'10^{-6}','10^{-4}','10^{-2}','10^{0}','10^{2}','10^{4}','10^{6}'};
 ax1.YMinorTick = 'on';
 ax1.Box = 'on';
 ax1.FontSize = 12;
@@ -56,8 +56,7 @@ color = jet(31);
 for fnum = 1:length(listing)
     RR = h5read([file_root,listing(fnum).name],'/Rain_Rate');
     if ~any(RR(1:25,:)>0.4)
-        ND = h5read([file_root,listing(fnum).name],'/Spectral_Drop_Densities');
-        ND = ND * 10e-3;
+        ND = h5read([file_root,listing(fnum).name],'/Spectral_Drop_Densities')* 1e-3;
         ND(ND<0) = nan;
         DS = h5read(['E:\DATA\MRR\h5_parameters_LT\MRR_Parameters',listing(fnum).name(end-11:end)],'/Drop_Size');
         figure;
@@ -73,10 +72,8 @@ for fnum = 1:length(listing)
         ax1.XLim = [0 5.5];
         ax1.XTick = 0:0.5:5.5;
         ax1.YScale = 'log';
-        ax1.YLim = [10e-6 10e6];
-        %         ax1.YTick = [10e-5 10e0 10e1 10e2 10e3 10e4 10e5 10e6];
-        %         ax1.YTickLabel = {'10^{0}','10^{1}','10^{2}','10^{3}','10^{4}','10^{5}'};
-        ax1.YMinorTick = 'on';
+        ax1.YLim = [1e-6 1e6];
+
         ax1.Box = 'on';
         ax1.FontSize = 12;
         ax1.TickLength = [0.015 0.02];

@@ -4,7 +4,7 @@
 % 2022.07.24 by zhangtc
 clear
 ltfile = 'E:\DATA\MRR\h5_aveMRR_LT\';
-savefile = 'E:\DATA\MRR\h5_parameters\';
+savefile = 'E:\DATA\MRR\h5_parameters_LT\';
 listing = dir([ltfile,'*.h5']);
 for lnum = 1:length(listing)
     dnm = str2double(listing(lnum).name(13:20));
@@ -13,7 +13,7 @@ for lnum = 1:length(listing)
     LWC = h5read([ltfile,listing(lnum).name],'/Liquid_Water_Content');
     RR = h5read([ltfile,listing(lnum).name],'/Rain_Rate');
     DS = h5read([ltfile,listing(lnum).name],'/Drop_Size');
-    ND = h5read([ltfile,listing(lnum).name],'/Spectral_Drop_Densities');
+    ND = h5read([ltfile,listing(lnum).name],'/Spectral_Drop_Densities')*1e-3;
     RF = h5read([ltfile,listing(lnum).name],'/Radar_Reflectivity');
     SR = h5read([ltfile,listing(lnum).name],'/Spectral_Reflectivities');
     
