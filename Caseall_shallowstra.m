@@ -23,25 +23,18 @@ for ifile = 1:5
     matimeloc = min(1440,(fix(max(mrrloc{ifile,1})./60)+1)*60);
     temp_centr_dia = central_diameter;
     temp_dia_bandw = diameter_bandwidth;
-    type2 = h5read(ottname2,'/typeflag');
-    rain2 = h5read(ottname2,'/rainflag');
+    type = h5read(ottname,'/typeflag');
+    rain = h5read(ottname,'/rainflag');
     
-    ottND1 = h5read(ottname1,'/ND');
-    ottRR1 = h5read(ottname1,'/RR');
-    ottDm1 = h5read(ottname1,'/Dm');
-    ottNw1 = h5read(ottname1,'/Nw');
-    ZZ1 = h5read(mrrname1,'/Radar_Reflectivity');
-    RR1 = h5read(mrrname1,'/Rain_Rate');
-    ND1 = h5read(mrrname1,'/Spectral_Drop_Densities');
-    DS = h5read(mrrpname1,'/Drop_Size');
-    ottND2 = h5read(ottname2,'/ND');
-    ottRR2 = h5read(ottname2,'/RR');
-    ottDm2 = h5read(ottname2,'/Dm');
-    ottNw2 = h5read(ottname2,'/Nw');
-    ZZ2 = h5read(mrrname2,'/Radar_Reflectivity');
-    RR2 = h5read(mrrname2,'/Rain_Rate');
-    ND2 = h5read(mrrname2,'/Spectral_Drop_Densities');
-    
+    ottND = h5read(ottname,'/ND');
+    ottRR = h5read(ottname,'/RR');
+    ottDm = h5read(ottname,'/Dm');
+    ottNw = h5read(ottname,'/Nw');
+    ZZ = h5read(mrrname,'/Radar_Reflectivity');
+    RR = h5read(mrrname,'/Rain_Rate');
+    ND = h5read(mrrname,'/Spectral_Drop_Densities');
+    DS = h5read(mrrpname,'/Drop_Size');
+
     %%
     tempDm = [ottDm1(1234:1263);ottDm1(1413:1440);ottDm2(1333:1409)];
     ottNw1(ottNw1<=1)=1;
@@ -94,8 +87,8 @@ for ifile = 1:5
     ax1.XLabel.String = 'D(mm)';
     ax1.YLabel.String = 'N(D)(m^{-3}\cdotmm^{-1})';
     title('OTT Parsivel');
-    saveas(gcf,'E:\DATA\MRR\Pictures\Casesofshallowstratiform\DSD_ottcases.png');
-    max(tempND)
+%     saveas(gcf,'E:\DATA\MRR\Pictures\Casesofshallowstratiform\DSD_ottcases.png');
+%     max(tempND)
     % close
     %%
     loc1 = 1234-15:1263;
@@ -133,6 +126,6 @@ for ifile = 1:5
     ax1.YLabel.String = 'N(D)(m^{-3}\cdotmm^{-1})';
     
     title('Raindrop Size Distribution');
-    legend('0.2 km','0.4 km','0.6 km','0.8 km','1.0 km','1.2 km','1.4 km','1.6 km','1.8 km','OTT');
+    legend('0.2 km','0.4 km','0.6 km','0.8 km','1.0 km','1.2 km','1.4 km','1.6 km','1.8 km','Parsivel 2');
     %     saveas(gcf,['E:\DATA\MRR\Pictures\Casesofshallowstratiform\DSD_casesall.png']);
 end
