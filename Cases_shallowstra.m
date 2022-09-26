@@ -156,49 +156,49 @@ for ifile = 2:2
     %     saveas(gcf,['E:\DATA\MRR\Pictures\Casesofshallowstratiform\shallow_RR',shallowday(ifile,:),'.png']);
     %     close
     %
-    %DSD
-    tempND1 =  ND(1:13,:,mrrloc{ifile,1});
-    legloc = [];
-    figure;
-    set(gcf,'Position',get(0,'ScreenSize')*0.5);
-    for ih = 1:13
-        if length(find(RR(ih,mrrloc{ifile,1})>0.01))>3
-            legloc = [legloc;num2str(sprintf('%3.1f km',ih*0.2))];
-            ihND1 = reshape(tempND1(ih,:,:),64,[]);
-            ihND1(ihND1<1e-4) = nan;
-            tempihND1 = mean(ihND1,2,'omitnan');
-            tempDS = DS(ih,:);
-            hold on
-            plot(tempDS(tempDS>0),tempihND1(tempDS>0),'-','LineWidth',1.5,'Color',GMT_paired(ih+1,:));
-            
-        end
-        
-        ax1 = gca;
-        ax1.XLim = [0.2 1.0];
-        ax1.XTick = 0.2:0.2:1.0;
-        ax1.YScale = 'log';
-        ax1.YLim = [1e-1 1e5];
-        %         ax1.YTick = [1e-3 1e-2 1e-1 1e0 1e1 1e2 1e3 1e4 1e5 1e6];
-        %         ax1.YTickLabel = {'10^{-3}','10^{-2}','10^{-1}','10^{0}','10^{1}','10^{2}','10^{3}','10^{4}','10^{5}','10^{6}'};
-        
-        ax1.YMinorTick = 'on';
-        ax1.Box = 'on';
-        ax1.FontSize = 12;
-        ax1.TickLength = [0.015 0.02];
-        ax1.LineWidth = 1.5;
-        ax1.XLabel.String = 'D(mm)';
-        ax1.YLabel.String = 'N(D)(m^{-3}\cdotmm^{-1})';
-%         title({'Raindrop Size Distribution_{Micro Rain Radar}';shallowday(ifile,:)});
-        legend(legloc);
-    end
-    tempottND = ottND(mrrloc{ifile,1},3:18);
-    tempottND(tempottND<1e-4) = nan;
-    plot(central_diameter(3:18),mean(tempottND,1,'omitnan'),...
-        'Color',[195,163,212]./255,'LineWidth', 1.5,'DisplayName','Parsivel 2');
-    hold off
-    
-        saveas(gcf,['E:\DATA\MRR\Pictures\Casesofshallowstratiform\shallow_DSD_',shallowday(ifile,:),'.png']);
-        close
+%     %DSD
+%     tempND1 =  ND(1:13,:,mrrloc{ifile,1});
+%     legloc = [];
+%     figure;
+%     set(gcf,'Position',get(0,'ScreenSize')*0.5);
+%     for ih = 1:13
+%         if length(find(RR(ih,mrrloc{ifile,1})>0.01))>3
+%             legloc = [legloc;num2str(sprintf('%3.1f km',ih*0.2))];
+%             ihND1 = reshape(tempND1(ih,:,:),64,[]);
+%             ihND1(ihND1<1e-4) = nan;
+%             tempihND1 = mean(ihND1,2,'omitnan');
+%             tempDS = DS(ih,:);
+%             hold on
+%             plot(tempDS(tempDS>0),tempihND1(tempDS>0),'-','LineWidth',1.5,'Color',GMT_paired(ih+1,:));
+%             
+%         end
+%         
+%         ax1 = gca;
+%         ax1.XLim = [0.2 1.0];
+%         ax1.XTick = 0.2:0.2:1.0;
+%         ax1.YScale = 'log';
+%         ax1.YLim = [1e-1 1e5];
+%         %         ax1.YTick = [1e-3 1e-2 1e-1 1e0 1e1 1e2 1e3 1e4 1e5 1e6];
+%         %         ax1.YTickLabel = {'10^{-3}','10^{-2}','10^{-1}','10^{0}','10^{1}','10^{2}','10^{3}','10^{4}','10^{5}','10^{6}'};
+%         
+%         ax1.YMinorTick = 'on';
+%         ax1.Box = 'on';
+%         ax1.FontSize = 12;
+%         ax1.TickLength = [0.015 0.02];
+%         ax1.LineWidth = 1.5;
+%         ax1.XLabel.String = 'D(mm)';
+%         ax1.YLabel.String = 'N(D)(m^{-3}\cdotmm^{-1})';
+% %         title({'Raindrop Size Distribution_{Micro Rain Radar}';shallowday(ifile,:)});
+%         legend(legloc);
+%     end
+%     tempottND = ottND(mrrloc{ifile,1},3:18);
+%     tempottND(tempottND<1e-4) = nan;
+%     plot(central_diameter(3:18),mean(tempottND,1,'omitnan'),...
+%         'Color',[195,163,212]./255,'LineWidth', 1.5,'DisplayName','Parsivel 2');
+%     hold off
+%     
+%         saveas(gcf,['E:\DATA\MRR\Pictures\Casesofshallowstratiform\shallow_DSD_',shallowday(ifile,:),'.png']);
+%         close
     
     %     %%
     %ND
