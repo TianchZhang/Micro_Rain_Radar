@@ -9,7 +9,7 @@ load('E:\DATA\Parsivel_temporary\DSD_parameters.mat','central_diameter');
 load('E:\DATA\Parsivel_temporary\DSD_parameters.mat', 'diameter_bandwidth');
 load('E:\Codes\Micro_Rain_Radar\Colormap_GMT_paired.mat');
 load('E:\DATA\MRR\MRR_BG','BGND');
-
+load('D:\Codes\Micro_Rain_Radar\Modified_dropsize.mat','mdf_DS');
 shallowday = ['20220320';'20220322';'20220509';'20220512';'20220605'];
 mrrloc = {618-15:750;835-15:925;[1234-15:1263,1413-15:1440];1333-15:1409;220-15:284};
 ottloc = {618:750;835:925;[1234:1263,1413:1440];1333:1409;220:284};
@@ -34,60 +34,63 @@ for ifile = 4:4
     RR= h5read(mrrname,'/Rain_Rate');
     ND = h5read(mrrname,'/Spectral_Drop_Densities')*1e-3-repmat(BGND,1,1,1440);
     DS = h5read(mrrpname,'/Drop_Size');
-    LWC = h5read(mrrname,'/Liquid_Water_Content')*1e3;
+    LWC = h5read(mrrname,'/Liquid_Water_Content');
     Nt = h5read(mrrpname,'/Nt')*1e-3;
     lwcnt = zeros(31,1440);
     lwcnt(Nt>0) =  LWC(Nt>0)./Nt(Nt>0);
     
     %     %%
     %     %ZZ
-    %     tempZZ = ZZ(1:15,mitimeloc:matimeloc);
-    %     tempZZ(tempZZ<0) = NaN;
-    %     tempZZ(tempZZ>55) = 55;
-    %     figure;
-    %     set(gcf,'Position',get(0,'ScreenSize')*0.5);
-    %     ax1 = gca;
-    %     % tar1 = pcolor(1200:1:1440,1:15,tempZZ);
-    %     % shading flat
-    %     tar1 = contourf(mitimeloc:matimeloc,1:15,tempZZ,'LineColor','none');
-    %     view(2);
-    %     shading flat
-    %     ax1.Layer = 'top';
-    %     ax1.FontSize = 12;
-    %     ax1.TickLength = [0.01 0.01];
-    %     ax1.LineWidth = 1.2;
-    %     ax1.XLim = [mitimeloc matimeloc];
-    %     ax1.XTick = mitimeloc:60:matimeloc;
-    %     ttamp = {};
-    %     for ii = 1:fix((matimeloc-mitimeloc)./60)+1
-    %         ttamp = [ttamp;[num2str(fix(mitimeloc./60)+ii-1),':00']];
-    %     end
-    %     ax1.XTickLabel = ttamp;
-    %     ax1.XLabel.String = 'Local Time';
-    %     ax1.XGrid = 'on';
-    %     ax1.YLim = [0 15];
-    %     ax1.YTick = 0:2.5:15;
-    %     ax1.YTickLabel = {'0.0', '0.5', '1.0', '1.5', '2.0', '2.5', '3.0'};
-    %     ax1.YLabel.String = 'Height(km)';
-    %     ax1.YGrid = 'on';
-    %     ax1.Position = [0.08,0.096,0.833,0.836];
-    %     ZZcolormap = [0.494117647058824,0.882352941176471,0.949019607843137;...
-    %         0.0745098039215686,0.623529411764706,1;0,0,1;0,1,0;...
-    %         0.282352941176471,0.701960784313725,0.188235294117647;...
-    %         0.0901960784313726,0.529411764705882,0.0313725490196078;...
-    %         1,1,0;0.929411764705882,0.694117647058824,0.125490196078431;...
-    %         1,0.411764705882353,0.160784313725490;...
-    %         1,0,0;0.635294117647059,0.0784313725490196,0.184313725490196];
-    %     cm1 = colormap(ax1,ZZcolormap);
-    %     c1 = colorbar;
-    %     c1.Label.String = 'dBz';
-    %     caxis([0.01 55.01]);
-    %     c1.Ticks = [0.01 0.5 1.0 1.5 2.0 2.5 3.0 3.5 4.0 4.5 5.0]*10;
-    %     c1.TickLabels = {'0','5','10','15','20','25','30','35','40','45','50'};
-    %     %         title({'Radar Reflectivity';shallowday(ifile,:)});
-    %     saveas(gcf,['E:\DATA\MRR\Pictures\figure\shallow_ZZ',shallowday(ifile,:),'.png']);
-    %     close
-    %     %%
+    %         tempZZ = ZZ(1:15,mitimeloc:matimeloc);
+    %         tempZZ(tempZZ<0) = NaN;
+    %         tempZZ(tempZZ>55) = 55;
+    %         figure;
+    %         set(gcf,'Position',get(0,'ScreenSize')*0.5);
+    %         ax1 = gca;
+    %         % tar1 = pcolor(1200:1:1440,1:15,tempZZ);
+    %         % shading flat
+    %         tar1 = contourf(mitimeloc:matimeloc,1:15,tempZZ,'LineColor','none');
+    %         view(2);
+    %         shading flat
+    %         ax1.Layer = 'top';
+    %         ax1.FontSize = 12;
+    %         ax1.TickLength = [0.01 0.01];
+    %         ax1.LineWidth = 1.2;
+    %         ax1.XLim = [mitimeloc matimeloc];
+    %         ax1.XTick = mitimeloc:60:matimeloc;
+    %         ttamp = {};
+    %         for ii = 1:fix((matimeloc-mitimeloc)./60)+1
+    %             ttamp = [ttamp;[num2str(fix(mitimeloc./60)+ii-1),':00']];
+    %         end
+    %         ax1.XTickLabel = ttamp;
+    %         ax1.XLabel.String = 'Local Time';
+    %         ax1.XGrid = 'on';
+    %         ax1.YLim = [0 15];
+    %         ax1.YTick = 0:2.5:15;
+    %         ax1.YTickLabel = {'0.0', '0.5', '1.0', '1.5', '2.0', '2.5', '3.0'};
+    %         ax1.YLabel.String = 'Height(km)';
+    %         ax1.YGrid = 'on';
+    %
+    %         ZZcolormap = [0.494117647058824,0.882352941176471,0.949019607843137;...
+    %             0.0745098039215686,0.623529411764706,1;0,0,1;0,1,0;...
+    %             0.282352941176471,0.701960784313725,0.188235294117647;...
+    %             0.0901960784313726,0.529411764705882,0.0313725490196078;...
+    %             1,1,0;0.929411764705882,0.694117647058824,0.125490196078431;...
+    %             1,0.411764705882353,0.160784313725490;...
+    %             1,0,0;0.635294117647059,0.0784313725490196,0.184313725490196];
+    %         cm1 = colormap(ax1,ZZcolormap);
+    %         c1 = colorbar;
+    %         c1.Label.String = 'dBz';
+    %         caxis([0.01 55.01]);
+    %         c1.Ticks = [0.01 0.5 1.0 1.5 2.0 2.5 3.0 3.5 4.0 4.5 5.0]*10;
+    %         c1.TickLabels = {'0','5','10','15','20','25','30','35','40','45','50'};
+    %         c1.Label.String = 'Z(dBz)';
+    %         c1.Position = [0.92,0.096,0.0185,0.836];
+    %         ax1.Position = [0.08,0.096,0.833,0.836];
+    %         %         title({'Radar Reflectivity';shallowday(ifile,:)});
+    %         saveas(gcf,['E:\DATA\MRR\Pictures\figure\shallow_ZZ',shallowday(ifile,:),'.png']);
+    %         close
+    %%
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %     %ND
     %     figure;
@@ -185,43 +188,43 @@ for ifile = 4:4
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %     %%
     %     %DSD
-    %     tempND1 =  ND(1:13,:,mrrloc{ifile,1});
-    %     legloc = [];
-    %     figure;
-    %     set(gcf,'Position',get(0,'ScreenSize')*0.5);
-    %     for ih = 1:13
-    %         if length(find(RR(ih,mrrloc{ifile,1})>0.01))>3
-    %             legloc = [legloc;num2str(sprintf('%3.1f km',ih*0.2))];
-    %             ihND1 = reshape(tempND1(ih,:,:),64,[]);
-    %             ihND1(ihND1<1e-4) = nan;
-    %             tempihND1 = mean(ihND1,2,'omitnan');
-    %             tempDS = DS(ih,:);
-    %             hold on
-    %             plot(tempDS(tempDS>0),tempihND1(tempDS>0),'-','LineWidth',1.5,'Color',GMT_paired(ih+1,:));
+    %         tempND1 =  ND(1:13,:,mrrloc{ifile,1});
+    %         legloc = [];
+    %         figure;
+    %         set(gcf,'Position',get(0,'ScreenSize')*0.5);
+    %         for ih = 1:13
+    %             if length(find(RR(ih,mrrloc{ifile,1})>0.01))>3
+    %                 legloc = [legloc;['MRR ',num2str(sprintf('%3.1f km',ih*0.2))]];
+    %                 ihND1 = reshape(tempND1(ih,:,:),64,[]);
+    %                 ihND1(ihND1<1e-4) = nan;
+    %                 tempihND1 = mean(ihND1,2,'omitnan');
+    %                 tempDS = DS(ih,:);
+    %                 hold on
+    %                 plot(tempDS(tempDS>0),tempihND1(tempDS>0),'-','LineWidth',1.5,'Color',GMT_paired(ih+1,:));
+    %             end
+    %             ax1 = gca;
+    %             ax1.XLim = [0.2 1.6];
+    %             ax1.XTick = 0.2:0.2:1.6;
+    %             ax1.YScale = 'log';
+    %             ax1.YLim = [1e-1 1e5];
+    %             ax1.YMinorTick = 'on';
+    %             ax1.Box = 'on';
+    %             ax1.FontSize = 12;
+    %             ax1.TickLength = [0.015 0.02];
+    %             ax1.LineWidth = 1.5;
+    %             ax1.XLabel.String = 'D(mm)';
+    %             ax1.YLabel.String = 'N(D)(m^{-3}\cdotmm^{-1})';
+    %             %         title({'Raindrop Size Distribution_{Micro Rain Radar}';shallowday(ifile,:)});
+    %             legend(legloc);
     %         end
-    %         ax1 = gca;
-    %         ax1.XLim = [0.2 1.6];
-    %         ax1.XTick = 0.2:0.2:1.6;
-    %         ax1.YScale = 'log';
-    %         ax1.YLim = [1e-1 1e5];
-    %         ax1.YMinorTick = 'on';
-    %         ax1.Box = 'on';
-    %         ax1.FontSize = 12;
-    %         ax1.TickLength = [0.015 0.02];
-    %         ax1.LineWidth = 1.5;
-    %         ax1.XLabel.String = 'D(mm)';
-    %         ax1.YLabel.String = 'N(D)(m^{-3}\cdotmm^{-1})';
-    %         %         title({'Raindrop Size Distribution_{Micro Rain Radar}';shallowday(ifile,:)});
-    %         legend(legloc);
-    %     end
-    %     ax1.Position = [0.08,0.096,0.833,0.836];
-    %     tempottND = ottND(mrrloc{ifile,1},3:18);
-    %     tempottND(tempottND<1e-4) = nan;
-    %     plot(central_diameter(3:18),mean(tempottND,1,'omitnan'),...
-    %         'Color',[0,255,255]./255,'LineWidth', 1.5,'DisplayName','Parsivel 2');
-    %     hold off
-    %     saveas(gcf,['E:\DATA\MRR\Pictures\figure\shallow_DSD_',shallowday(ifile,:),'.png']);
-    %     close
+    %         ax1.Position = [0.08,0.096,0.833,0.836];
+    %         tempottND = ottND(mrrloc{ifile,1},3:18);
+    %         tempottND(tempottND<1e-4) = nan;
+    %         plot(central_diameter(3:18),mean(tempottND,1,'omitnan'),...
+    %             'Color',[0,255,255]./255,'LineWidth', 1.5,'DisplayName','Parsivel 2');
+    %         hold off
+    %         saveas(gcf,['E:\DATA\MRR\Pictures\figure\shallow_DSD_',shallowday(ifile,:),'.png']);
+    %         close
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %     %%
     %     %ottNw-Dm
@@ -250,62 +253,121 @@ for ifile = 4:4
     %     close
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %%
-    %MRR_ND
+    %     %MRR_ND
+    %     if ifile ==2
+    %         tempND = ND(1:4,1:30,mitimeloc:matimeloc);
+    %         tempDS = mdf_DS(1:4,1:30);
+    %         tempy = repmat((1:4).',1,30);
+    %     else
+    %         tempND = ND(1:9,1:30,mitimeloc:matimeloc);
+    %         tempDS = mdf_DS(1:9,1:30);
+    %         tempy = repmat((1:9).',1,30);
+    %     end
+    %     tempND(tempND<1) = 1;
+    %     tempND(tempND>10^4.9) = 10^4.8;
+    %     tempND = log10(tempND);
+    %     tempND(tempND<0) = nan;
+    %     meanND = mean(tempND,3,'omitnan');
+    %     figure;
+    %     set(gcf,'Position',get(0,'ScreenSize')*0.5);
+    %     if ifile ==2
+    %         tar2 = contourf(tempDS,tempy,meanND,'LineColor','none');
+    %     else
+    %         tar2 = contourf(tempDS,tempy,meanND,'LineColor','none');
+    %     end
+    %     view(2);
+    %     colormap([[1,1,1];jet(9);[0.49,0.18,0.56]]);
+    %     c2 = colorbar;
+    %     caxis([-0.49 5.01]);
+    %     c2.Ticks = [0 0.5 1.0 1.5 2.0 2.5 3.0 3.5 4.0,4.5];
+    %     c2.TickLabels = {'0','0.5','1.0','1.5','2.0','2.5','3.0','3.5','4.0','4.5'};
+    %     c2.Label.String = 'log_{10}N(D)';
+    %     c2.Position = [0.92,0.096,0.0185,0.836];
+    %     ax2 = gca;
+    %     ax2.FontSize = 12;
+    %     ax2.Layer = 'top';
+    %     ax2.FontSize = 12;
+    %     ax2.TickLength = [0.01 0.01];
+    %     ax2.LineWidth = 1.2;
+    %     ax2.XLim = [0.2 0.8];
+    %     ax2.XTick = 0.2:0.1:0.8;
+    %     %     ax2.XTickLabel = {''};
+    %     ax2.XLabel.String = 'Diameter(mm)';
+    %     ax2.XGrid = 'on';
+    %     if ifile ==2
+    %         ax2.XLim = [0.2 0.8];
+    %         ax2.XTick = 0.2:0.2:0.8;
+    %         ax2.YLim = [1 4];
+    %         ax2.YTick = 1:4;
+    %         ax2.YTickLabel = {'0.2', '0.4', '0.6','0.8'};
+    %     else
+    %         ax2.XLim = [0.2 1];
+    %         ax2.XTick = 0.2:0.2:1;
+    %         ax2.XTickLabel = {'0.2', '0.4', '0.6','0.8','1.0'};
+    %         ax2.YLim = [1 9];
+    %         ax2.YTick = 1:9;
+    %         ax2.YTickLabel = {'0.2', '0.4', '0.6','0.8','1.0','1.2','1.4','1.6','1.8'};
+    %     end
+    %
+    %     ax2.YLabel.String = 'Height(km)';
+    %     %     ax2.YLabel.Position = [mitimeloc-8,-3.2,-10];
+    %     ax2.YGrid = 'on';
+    %     ax2.Position = [0.08,0.096,0.833,0.836];
+    %     savename = ['E:\DATA\MRR\Pictures\figure\shallow_Height_ND',shallowday(ifile,:),'.png'];
+    %     saveas(gcf,savename);
+    %     close
+    %%
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % LWC
     if ifile ==2
-        tempND = ND(1:4,1:30,mitimeloc:matimeloc);
-        
+        templwc = LWC(1:4,mitimeloc:matimeloc)*1e3;
     else
-        tempND = ND(1:9,1:30,mitimeloc:matimeloc);
+        templwc = LWC(1:9,mitimeloc:matimeloc)*1e3;
     end
-    tempDS = DS(1,1:30);
-    tempND(tempND<1) = 1;
-    tempND(tempND>10^4.9) = 10^4.8;
-    tempND = log10(tempND);
-    tempND(tempND<0) = nan;
-    meanND = mean(tempND,3,'omitnan');
     figure;
     set(gcf,'Position',get(0,'ScreenSize')*0.5);
+    ax1 = gca;
+    % tar1 = pcolor(1200:1:1440,1:15,tempZZ);
+    % shading flat
     if ifile ==2
-        tar2 = contourf(tempDS(tempDS>0),1:4,meanND(:,tempDS>0),'LineColor','none');
+        tar1 = contourf(mitimeloc:matimeloc,1:4,templwc,'LineColor','none');
     else
-        tar2 = contourf(tempDS(tempDS>0),1:9,meanND(:,tempDS>0),'LineColor','none');
+        tar1 = contourf(mitimeloc:matimeloc,1:9,templwc,'LineColor','none');
     end
     view(2);
+    shading flat
+    ax1.Layer = 'top';
+    ax1.FontSize = 12;
+    ax1.TickLength = [0.01 0.01];
+    ax1.LineWidth = 1.2;
+    ax1.XLim = [mitimeloc matimeloc];
+    ax1.XTick = mitimeloc:60:matimeloc;
+    ttamp = {};
+    for ii = 1:fix((matimeloc-mitimeloc)./60)+1
+        ttamp = [ttamp;[num2str(fix(mitimeloc./60)+ii-1),':00']];
+    end
     colormap([[1,1,1];jet(9);[0.49,0.18,0.56]]);
     c2 = colorbar;
-    caxis([-0.49 5.01]);
-    c2.Ticks = [0 0.5 1.0 1.5 2.0 2.5 3.0 3.5 4.0,4.5];
-    c2.TickLabels = {'0','0.5','1.0','1.5','2.0','2.5','3.0','3.5','4.0','4.5'};
-    ax2 = gca;
-    ax2.FontSize = 12;
-    ax2.Layer = 'top';
-    ax2.FontSize = 12;
-    ax2.TickLength = [0.01 0.01];
-    ax2.LineWidth = 1.2;
-    ax2.XLim = [0.2 0.8];
-    ax2.XTick = 0.2:0.1:0.8;
-    %     ax2.XTickLabel = {''};
-    ax2.XLabel.String = 'Diameter(mm)';
-    ax2.XGrid = 'on';
-    if ifile ==2
-        ax2.XLim = [0.2 0.8];
-        ax2.XTick = 0.2:0.2:0.8;
-        ax2.YLim = [1 4];
-        ax2.YTick = 1:4;
-        ax2.YTickLabel = {'0.2', '0.4', '0.6','0.8'};
-    else
-        ax2.XLim = [0.2 1];
-        ax2.XTick = 0.2:0.2:1;
-        ax2.XTickLabel = {'0.2', '0.4', '0.6','0.8','1.0'};
-        ax2.YLim = [1 9];
-        ax2.YTick = 1:9;
-        ax2.YTickLabel = {'0.2', '0.4', '0.6','0.8','1.0','1.2','1.4','1.6','1.8'};
-    end
-    
-    ax2.YLabel.String = 'Height(km)';
-    %     ax2.YLabel.Position = [mitimeloc-8,-3.2,-10];
-    ax2.YGrid = 'on';
-    ax2.Position = [0.08,0.096,0.833,0.836];
-    savename = ['E:\DATA\MRR\Pictures\figure\shallow_Height_ND',shallowday(ifile,:),'.png'];
-    saveas(gcf,savename);
+%     caxis([-9.85 99.9]);
+%     c2.Ticks = [0 0.5 1.0 1.5 2.0 2.5 3.0 3.5 4.0,4.5];
+%     c2.TickLabels = {'0','0.5','1.0','1.5','2.0','2.5','3.0','3.5','4.0','4.5'};
+    c2.Label.String = 'LWC(10{-3}  g\cdotm{-3})';
+    c2.Position = [0.92,0.096,0.0185,0.836];
+    ax1.FontSize = 12;
+    ax1.Layer = 'top';
+    ax1.FontSize = 12;
+    ax1.TickLength = [0.01 0.01];
+    ax1.LineWidth = 1.2;
+    ax1.XTickLabel = ttamp;
+    ax1.XLabel.String = 'Local Time';
+    ax1.XGrid = 'on';
+%     ax1.YLim = [1 4];
+%     ax1.YTick = 1:1:4;
+%     ax1.YTickLabel = {'0.2', '0.4', '0.6', '0.8'};
+    ax1.YLabel.String = 'Height(km)';
+    ax1.YGrid = 'on';
+    ax1.Position = [0.08,0.096,0.833,0.836];
+%             savename = ['E:\DATA\MRR\Pictures\figure\shallow_LWC',shallowday(ifile,:),'.png'];
+%         saveas(gcf,savename);
+%         close
 end
